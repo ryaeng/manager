@@ -187,9 +187,6 @@ const interfacesToPayload = (interfaces?: ExtendedInterface[]) => {
 const deviceSlots = ['sda', 'sdb', 'sdc', 'sdd', 'sde', 'sdf', 'sdg', 'sdh'];
 const deviceCounterDefault = 1;
 
-// DiskID reserved on the back-end to indicate Finnix.
-const finnixDiskID = 25669;
-
 export const LinodeConfigDialog = (props: Props) => {
   const { config, isReadOnly, linodeId, onClose, open } = props;
 
@@ -307,11 +304,6 @@ export const LinodeConfigDialog = (props: Props) => {
     formik.setSubmitting(true);
 
     const configData = convertStateToData(values) as LinodeConfigCreationData;
-
-    // If Finnix was selected, make sure it gets sent as a number in the payload, not a string.
-    if (Number(configData.initrd) === finnixDiskID) {
-      configData.initrd = finnixDiskID;
-    }
 
     if (!regionHasVLANS) {
       delete configData.interfaces;
@@ -487,7 +479,6 @@ export const LinodeConfigDialog = (props: Props) => {
               value: String(id) as null | number | string,
             };
           }),
-          { label: 'Recovery – Finnix (initrd)', value: String(finnixDiskID) },
         ],
         value: category,
       };
